@@ -3431,7 +3431,7 @@ void GenMeshTangents(Mesh *mesh)
     Vector3 *tan1 = (Vector3 *)RL_MALLOC(mesh->vertexCount*sizeof(Vector3));
     Vector3 *tan2 = (Vector3 *)RL_MALLOC(mesh->vertexCount*sizeof(Vector3));
 
-    for (int i = 0; i < mesh->vertexCount; i += 3)
+    for (int i = 0; i < mesh->vertexCount - 3; i += 3)
     {
         // Get triangle vertices
         Vector3 v1 = { mesh->vertices[(i + 0)*3 + 0], mesh->vertices[(i + 0)*3 + 1], mesh->vertices[(i + 0)*3 + 2] };
@@ -5549,7 +5549,7 @@ static bool GetPoseAtTimeGLTF(cgltf_interpolation_type interpolationType, cgltf_
         }
     }
 
-    float duration = fmax((tend - tstart), EPSILON);
+    float duration = fmaxf((tend - tstart), EPSILON);
     float t = (time - tstart)/duration;
     t = (t < 0.0f)? 0.0f : t;
     t = (t > 1.0f)? 1.0f : t;

@@ -314,7 +314,7 @@ Image LoadImageRaw(const char *fileName, int width, int height, int format, int 
     if (fileData != NULL)
     {
         unsigned char *dataPtr = fileData;
-        unsigned int size = GetPixelDataSize(width, height, format);
+        int size = GetPixelDataSize(width, height, format);
 
         if (size <= dataSize)   // Security check
         {
@@ -697,8 +697,8 @@ Image LoadImageFromScreen(void)
     Vector2 scale = GetWindowScaleDPI();
     Image image = { 0 };
 
-    image.width = GetScreenWidth()*scale.x;
-    image.height = GetScreenHeight()*scale.y;
+    image.width = (int)(GetScreenWidth()*scale.x);
+    image.height = (int)(GetScreenHeight()*scale.y);
     image.mipmaps = 1;
     image.format = PIXELFORMAT_UNCOMPRESSED_R8G8B8A8;
     image.data = rlReadScreenPixels(image.width, image.height);
@@ -4510,8 +4510,13 @@ Color Fade(Color color, float alpha)
 // Get hexadecimal value for a Color
 int ColorToInt(Color color)
 {
-    int result = (((int)color.r << 24) | ((int)color.g << 16) | ((int)color.b << 8) | (int)color.a);
-
+    int result = 0;
+    
+    result = (int)(((unsigned int)color.r << 24) | 
+                   ((unsigned int)color.g << 16) | 
+                   ((unsigned int)color.b << 8) | 
+                    (unsigned int)color.a);
+    
     return result;
 }
 
